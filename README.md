@@ -2,6 +2,8 @@
 
 `pymore` is a collection of useful utilities for Python.
 
+![Test all the code](https://github.com/dabacon/pymore/workflows/Continuous%20Integration/badge.svg)
+
 This includes 
 
 * EqualsTester: a helper for testing the equality contract in Python (originally developed 

@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pymore.equals_tester import (
-    EqualsTester
-)
+from pymore.equals_tester import EqualsTester

@@ -30,18 +30,18 @@ import itertools
 
 class EqualsTester:
     """Tests equality against user-provided disjoint equivalence groups.
-    
+
     Example usage:
 
         ```
         import pymore
         tester = pymore.EqualsTester()
-        
+
         # Initialy this tests that each of these objects satisfy the equals contract.
         tester.add_equality_group(MyObject('a'), MyObject('a'))
 
-        # Each new addition tests that the objects this new group are not equal to those that 
-        # have already been added. So this will raise an `AssertionErro` if, for example, 
+        # Each new addition tests that the objects this new group are not equal to those that
+        # have already been added. So this will raise an `AssertionError` if, for example,
         # `MyObject('a') == MyObject('b')`.
         tester.add_equality_group(MyObject('b'), MyObject('b'))
         ```
@@ -59,15 +59,15 @@ class EqualsTester:
 
     def add_equality_group(self, *group_items: Any):
         """Tries to add a disjoint equivalence group to the equality tester.
-        
-        This methods asserts that items within the group must all be equal to each other, 
+
+        This methods asserts that items within the group must all be equal to each other,
         but not equal to any items in other groups that have been or will be added.
-        
+
         Args:
           *group_items: The items making up the equivalence group.
         Raises:
-            AssertionError: Items within the group are not equal to each other, or items in 
-            another group are equal to items within the new group, or the items violate the 
+            AssertionError: Items within the group are not equal to each other, or items in
+            another group are equal to items within the new group, or the items violate the
             equals-implies-same-hash rule.
         """
         self._verify_equality_group(*group_items)
@@ -78,15 +78,15 @@ class EqualsTester:
     def make_equality_group(self, *factories: Callable[[], Any]):
         """Tries to add a disjoint equivalence group to the equality tester.
 
-        Uses the factory methods to produce two different objects with the same initialization 
-        for each factory. Asserts that the objects are equal, but not equal to any items in 
+        Uses the factory methods to produce two different objects with the same initialization
+        for each factory. Asserts that the objects are equal, but not equal to any items in
         other groups that have been or will be added. Adds the objects as a group.
 
         Args:
             factories: Methods for producing independent copies of an item.
         Raises:
-            AssertionError: The factories produce items not equal to the others, or items in 
-            another group are equal to items from the factory, or the items violate the 
+            AssertionError: The factories produce items not equal to the others, or items in
+            another group are equal to items from the factory, or the items violate the
             equal-implies-same-hash rule.
         """
         self.add_equality_group(*(f() for f in factories for _ in range(2)))
@@ -108,8 +108,8 @@ class EqualsTester:
         Args:
           *group_items: The items making up the equivalence group.
         Raises:
-            AssertionError: Items within the group are not equal to each other, or items in 
-            another group are equal to items within the new group, or the items violate the 
+            AssertionError: Items within the group are not equal to each other, or items in
+            another group are equal to items within the new group, or the items violate the
             equals-implies-same-hash rule.
         """
         assert group_items
@@ -140,9 +140,9 @@ class EqualsTester:
             )
             example = next(examples)
             raise AssertionError(
-                'Items in the same group produced different hashes. '
-                f'Example: hash({example[0]!r}) is {example[1]!r} '
-                f'but hash({example[2]!r}) is {example[3]!r}.'
+                "Items in the same group produced different hashes. "
+                f"Example: hash({example[0]!r}) is {example[1]!r} "
+                f"but hash({example[2]!r}) is {example[3]!r}."
             )
 
 

@@ -34,9 +34,9 @@ def test_add_equality_group_correct():
 
     eq.add_equality_group([1, 2, 3], [1, 2, 3])
 
-    eq.add_equality_group({'b': 3, 'a': 2}, {'a': 2, 'b': 3})
+    eq.add_equality_group({"b": 3, "a": 2}, {"a": 2, "b": 3})
 
-    eq.add_equality_group('unrelated')
+    eq.add_equality_group("unrelated")
 
 
 def test_assert_make_equality_group():
@@ -86,19 +86,19 @@ def test_add_equality_group_bad_hash():
             return self._h
 
     eq = pymore.EqualsTester()
-    eq.add_equality_group(KeyHash('a', 5), KeyHash('a', 5))
-    eq.add_equality_group(KeyHash('b', 5))
-    with pytest.raises(AssertionError, match='produced different hashes'):
-        eq.add_equality_group(KeyHash('c', 2), KeyHash('c', 3))
+    eq.add_equality_group(KeyHash("a", 5), KeyHash("a", 5))
+    eq.add_equality_group(KeyHash("b", 5))
+    with pytest.raises(AssertionError, match="produced different hashes"):
+        eq.add_equality_group(KeyHash("c", 2), KeyHash("c", 3))
 
 
 def test_add_equality_group_exception_hash():
     class FailHash:
         def __hash__(self):
-            raise ValueError('injected failure')
+            raise ValueError("injected failure")
 
     eq = pymore.EqualsTester()
-    with pytest.raises(ValueError, match='injected failure'):
+    with pytest.raises(ValueError, match="injected failure"):
         eq.add_equality_group(FailHash())
 
 
@@ -155,7 +155,7 @@ def test_fails_hash_is_default_and_inconsistent():
         def __ne__(self, other):
             return not self == other
 
-    with pytest.raises(AssertionError, match='different hashes'):
+    with pytest.raises(AssertionError, match="different hashes"):
         eq.make_equality_group(DefaultHashImplementation)
 
 
@@ -179,7 +179,7 @@ def test_fails_when_ne_is_inconsistent():
         def __hash__(self):
             return hash(self.x)  # coverage: ignore
 
-    with pytest.raises(AssertionError, match='inconsistent'):
+    with pytest.raises(AssertionError, match="inconsistent"):
         eq.make_equality_group(InconsistentNeImplementation)
 
 
@@ -201,7 +201,7 @@ def test_fails_when_ne_is_inconsistent_due_to_not_implemented():
         def __hash__(self):
             return hash(self.x)
 
-    with pytest.raises(AssertionError, match='inconsistent'):
+    with pytest.raises(AssertionError, match="inconsistent"):
         eq.make_equality_group(InconsistentNeImplementation)
 
 
@@ -220,7 +220,7 @@ def test_fails_when_not_reflexive():
         def __ne__(self, other):
             return not self == other
 
-    with pytest.raises(AssertionError, match='equal to itself'):
+    with pytest.raises(AssertionError, match="equal to itself"):
         eq.add_equality_group(NotReflexiveImplementation())
 
 
