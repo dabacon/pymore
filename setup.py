@@ -48,3 +48,15 @@ setup(
     packages=pymore_packages,
     include_package_data=True,
 )
+
+# Instruction for release
+# 1. Create distribution: 
+#   python setup.py sdist bdist_wheel
+# 2. Check the distribution: 
+#   twine check dist/*
+# 3. Upload to test pypi: 
+#   twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# 4. Visit https://test.pypi.org/project/pymore/ and check.
+# 5. Upload to prod pypi:
+#   twine upload dist/*
+# 6. Confirm on https://pypi.org/project/pymore/

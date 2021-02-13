@@ -30,4 +30,4 @@ tester.add_equality_group(MyObject("b"), MyObject("b")
 # License
 
 This package is licensed under an Apache 2.0 license. This code is derived from work in
-other frameworks.  See [LICENSE](LICENSE) and [NOTICES](NOTICES) for details.
+other frameworks.  See [LICENSE](https://github.com/dabacon/pymore/blob/main/LICENSE) and [NOTICES](https://github.com/dabacon/pymore/blob/main/NOTICES) for details.
