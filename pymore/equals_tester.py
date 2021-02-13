@@ -1,3 +1,4 @@
+# Copyright 2021 The pymore Developers
 # Copyright 2018 The Cirq Developers
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +14,11 @@
 # limitations under the License.
 
 """A utility class for testing equality methods.
-To test an equality method, create an EqualityTester and add several groups
-of items to it. The equality tester will check that the items within each
-group are all equal to each other, but that items between each group are never
-equal to each other. It will also check that a==b implies hash(a)==hash(b).
+
+To test an equality method, create an EqualityTester and add several groups of items to it. 
+The equality tester will check that the items within each group are all equal to each other, 
+but that items between each group are never equal to each other. It will also check that 
+`a==b` implies `hash(a)==hash(b)`.
 """
 
 import collections
@@ -27,32 +29,89 @@ import itertools
 
 
 class EqualsTester:
-    """Tests equality against user-provided disjoint equivalence groups."""
+    """Tests equality against user-provided disjoint equivalence groups.
+    
+    Example usage:
+
+        ```
+        import pymore
+        tester = pymore.EqualsTester()
+        
+        # Initialy this tests that each of these objects satisfy the equals contract.
+        tester.add_equality_group(MyObject('a'), MyObject('a'))
+
+        # Each new addition tests that the objects this new group are not equal to those that 
+        # have already been added. So this will raise an `AssertionErro` if, for example, 
+        # `MyObject('a') == MyObject('b')`.
+        tester.add_equality_group(MyObject('b'), MyObject('b'))
+        ```
+
+    Since it is a common pattern to create equality groups with two separatedly created objects
+    there is a method that takes factories instead.
+
+        ```
+        tester.make_equality_group(lambda: MyObject('c'))
+        ```
+    """
 
     def __init__(self):
         self._groups = [(_ClassUnknownToSubjects(),)]
+
+    def add_equality_group(self, *group_items: Any):
+        """Tries to add a disjoint equivalence group to the equality tester.
+        
+        This methods asserts that items within the group must all be equal to each other, 
+        but not equal to any items in other groups that have been or will be added.
+        
+        Args:
+          *group_items: The items making up the equivalence group.
+        Raises:
+            AssertionError: Items within the group are not equal to each other, or items in 
+            another group are equal to items within the new group, or the items violate the 
+            equals-implies-same-hash rule.
+        """
+        self._verify_equality_group(*group_items)
+
+        # Remember this group, to enable disjoint checks vs later groups.
+        self._groups.append(group_items)
+
+    def make_equality_group(self, *factories: Callable[[], Any]):
+        """Tries to add a disjoint equivalence group to the equality tester.
+
+        Uses the factory methods to produce two different objects with the same initialization 
+        for each factory. Asserts that the objects are equal, but not equal to any items in 
+        other groups that have been or will be added. Adds the objects as a group.
+
+        Args:
+            factories: Methods for producing independent copies of an item.
+        Raises:
+            AssertionError: The factories produce items not equal to the others, or items in 
+            another group are equal to items from the factory, or the items violate the 
+            equal-implies-same-hash rule.
+        """
+        self.add_equality_group(*(f() for f in factories for _ in range(2)))
 
     @staticmethod
     def _eq_check(v1: Any, v2: Any) -> bool:
         eq = v1 == v2
         ne = v1 != v2
 
-        assert eq != ne, "__eq__ is inconsistent with __ne__ between {!r} and {!r}".format(v1, v2)
+        assert eq != ne, f"__eq__ is inconsistent with __ne__ between {v1!r} and {v2!r}"
         return eq
 
     def _verify_equality_group(self, *group_items: Any):
         """Verifies that a group is an equivalence group.
-        This methods asserts that items within the group must all be equal to
-        each other, but not equal to any items in other groups that have been
-        or will be added.
+
+        This methods asserts that items within the group must all be equal to each other,
+        but not equal to any items in other groups that have been or will be added.
+
         Args:
           *group_items: The items making up the equivalence group.
         Raises:
-            AssertionError: Items within the group are not equal to each other,
-                or items in another group are equal to items within the new
-                group, or the items violate the equals-implies-same-hash rule.
+            AssertionError: Items within the group are not equal to each other, or items in 
+            another group are equal to items within the new group, or the items violate the 
+            equals-implies-same-hash rule.
         """
-
         assert group_items
 
         # Within-group items must be equal.
@@ -61,18 +120,14 @@ class EqualsTester:
             assert same or v1 is not v2, "{!r} isn't equal to itself!".format(v1)
             assert (
                 same
-            ), "{!r} and {!r} can't be in the same equality group. They're not equal.".format(
-                v1, v2
-            )
+            ), f"{v1!r} and {v2!r} can't be in the same equality group. They're not equal."
 
         # Between-group items must be unequal.
         for other_group in self._groups:
             for v1, v2 in itertools.product(group_items, other_group):
                 assert not EqualsTester._eq_check(
                     v1, v2
-                ), "{!r} and {!r} can't be in different equality groups. They're equal.".format(
-                    v1, v2
-                )
+                ), f"{v1!r} and {v2!r} can't be in different equality groups. They're equal."
 
         # Check that group items hash to the same thing, or are all unhashable.
         hashes = [hash(v) if isinstance(v, collections.abc.Hashable) else None for v in group_items]
@@ -86,45 +141,13 @@ class EqualsTester:
             example = next(examples)
             raise AssertionError(
                 'Items in the same group produced different hashes. '
-                'Example: hash({!r}) is {!r} but hash({!r}) is {!r}.'.format(*example)
+                f'Example: hash({example[0]!r}) is {example[1]!r} '
+                f'but hash({example[2]!r}) is {example[3]!r}.'
             )
-
-    def add_equality_group(self, *group_items: Any):
-        """Tries to add a disjoint equivalence group to the equality tester.
-        This methods asserts that items within the group must all be equal to
-        each other, but not equal to any items in other groups that have been
-        or will be added.
-        Args:
-          *group_items: The items making up the equivalence group.
-        Raises:
-            AssertionError: Items within the group are not equal to each other,
-                or items in another group are equal to items within the new
-                group, or the items violate the equals-implies-same-hash rule.
-        """
-
-        self._verify_equality_group(*group_items)
-
-        # Remember this group, to enable disjoint checks vs later groups.
-        self._groups.append(group_items)
-
-    def make_equality_group(self, *factories: Callable[[], Any]):
-        """Tries to add a disjoint equivalence group to the equality tester.
-        Uses the factory methods to produce two different objects with the same
-        initialization for each factory. Asserts that the objects are equal, but
-        not equal to any items in other groups that have been or will be added.
-        Adds the objects as a group.
-        Args:
-            factories: Methods for producing independent copies of an item.
-        Raises:
-            AssertionError: The factories produce items not equal to the others,
-                or items in another group are equal to items from the factory,
-                or the items violate the equal-implies-same-hash rule.
-        """
-        self.add_equality_group(*(f() for f in factories for _ in range(2)))
 
 
 class _ClassUnknownToSubjects:
-    """Equality methods should be able to deal with the unexpected."""
+    """Equality methods should be able to deal with the unexpected. This is the unexpected."""
 
     def __eq__(self, other):
         return isinstance(other, _ClassUnknownToSubjects)

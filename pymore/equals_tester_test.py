@@ -1,3 +1,4 @@
+# Copyright 2021 The pymore Developers
 # Copyright 2018 The Cirq Developers
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +16,11 @@
 import fractions
 import pytest
 
-from cirq.testing.equals_tester import EqualsTester
+import pymore
 
 
 def test_add_equality_group_correct():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     eq.add_equality_group(fractions.Fraction(1, 1))
 
@@ -39,7 +40,7 @@ def test_add_equality_group_correct():
 
 
 def test_assert_make_equality_group():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     with pytest.raises(AssertionError, match="can't be in the same"):
         eq.make_equality_group(object)
@@ -57,13 +58,13 @@ def test_assert_make_equality_group():
 
 
 def test_add_equality_group_not_equivalent():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
     with pytest.raises(AssertionError, match="can't be in the same"):
         eq.add_equality_group(1, 2)
 
 
 def test_add_equality_group_not_disjoint():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
     eq.add_equality_group(1)
     with pytest.raises(AssertionError, match="can't be in different"):
         eq.add_equality_group(1)
@@ -84,7 +85,7 @@ def test_add_equality_group_bad_hash():
         def __hash__(self):
             return self._h
 
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
     eq.add_equality_group(KeyHash('a', 5), KeyHash('a', 5))
     eq.add_equality_group(KeyHash('b', 5))
     with pytest.raises(AssertionError, match='produced different hashes'):
@@ -96,13 +97,13 @@ def test_add_equality_group_exception_hash():
         def __hash__(self):
             raise ValueError('injected failure')
 
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
     with pytest.raises(ValueError, match='injected failure'):
         eq.add_equality_group(FailHash())
 
 
 def test_fails_when_forgot_type_check():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     class NoTypeCheckEqualImplementation:
         def __init__(self):
@@ -122,7 +123,7 @@ def test_fails_when_forgot_type_check():
 
 
 def test_fails_when_equal_to_everything():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     class AllEqual:
         __hash__ = None
@@ -138,7 +139,7 @@ def test_fails_when_equal_to_everything():
 
 
 def test_fails_hash_is_default_and_inconsistent():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     class DefaultHashImplementation:
         __hash__ = object.__hash__
@@ -159,7 +160,7 @@ def test_fails_hash_is_default_and_inconsistent():
 
 
 def test_fails_when_ne_is_inconsistent():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     class InconsistentNeImplementation:
         def __init__(self):
@@ -183,7 +184,7 @@ def test_fails_when_ne_is_inconsistent():
 
 
 def test_fails_when_ne_is_inconsistent_due_to_not_implemented():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     class InconsistentNeImplementation:
         def __init__(self):
@@ -205,7 +206,7 @@ def test_fails_when_ne_is_inconsistent_due_to_not_implemented():
 
 
 def test_fails_when_not_reflexive():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     class NotReflexiveImplementation:
         def __init__(self):
@@ -224,7 +225,7 @@ def test_fails_when_not_reflexive():
 
 
 def test_fails_when_not_commutative():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
 
     class NotCommutativeImplementation:
         def __init__(self, x):
@@ -246,7 +247,7 @@ def test_fails_when_not_commutative():
 
 
 def test_works_on_types():
-    eq = EqualsTester()
+    eq = pymore.EqualsTester()
     eq.add_equality_group(object)
     eq.add_equality_group(int)
     eq.add_equality_group(object())
