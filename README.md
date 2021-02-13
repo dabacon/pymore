@@ -3,6 +3,7 @@
 `pymore` is a collection of useful utilities for Python.
 
 ![Test all the code](https://github.com/dabacon/pymore/workflows/Continuous%20Integration/badge.svg)
+[![PyPI version](https://badge.fury.io/py/pymore.svg)](https://badge.fury.io/py/pymore)
 
 This includes 
 
@@ -13,9 +14,11 @@ for [Cirq](https://github.com/quantumlib/cirq))
 import pymore
 
 tester = pymore.EqualsTester()
+
 # This tests that the added elements all satisfy the equals contract
 # between themselves.
 tester.add_equality_group(MyObject("a"), MyObject("a"))
+
 # Each new addition of an equality group also tests that the elements
 # in this new group are not equal to those in the perviously added group.
 # So, for example, this would raise an `AssertionError` if it was
