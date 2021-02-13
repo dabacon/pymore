@@ -61,7 +61,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        cat requirements-dev.txt | grep mypy | xargs pip install
-    - name: Check format
+        pip install -r requirements-dev.txt
+    - name: Run type checking
       run: |
         mypy --config-file=check/mypy.ini .
