@@ -23,7 +23,7 @@ tester.add_equality_group(MyObject("a"), MyObject("a"))
 # in this new group are not equal to those in the perviously added group.
 # So, for example, this would raise an `AssertionError` if it was
 # true that `MyObject("a")` was equal to `MyObject("b")`.
-tester.add_equality_group(MyObject("b"), MyObject("b")
+tester.add_equality_group(MyObject("b"), MyObject("b"))
 ```
 
 
