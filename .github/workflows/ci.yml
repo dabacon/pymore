@@ -64,4 +64,4 @@ jobs:
         cat requirements-dev.txt | grep mypy | xargs pip install
     - name: Check format
       run: |
-        mypy --config-file=mypy.ini .
+        mypy --config-file=check/mypy.ini .
