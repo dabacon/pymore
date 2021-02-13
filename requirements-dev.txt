@@ -1,5 +1,5 @@
 # Requires for testing and doing development.
-
-pytest
 black
 mypy
+pytest
+twine
