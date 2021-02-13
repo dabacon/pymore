@@ -21,7 +21,7 @@ but that items between each group are never equal to each other. It will also ch
 `a==b` implies `hash(a)==hash(b)`.
 """
 
-import collections
+import collections.abc
 
 from typing import Any, Callable
 
