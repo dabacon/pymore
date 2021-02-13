@@ -16,35 +16,35 @@ import io
 import os
 from setuptools import setup
 
-name = 'pymore'
+name = "pymore"
 
-description = 'Mo python, less problems. Helpful python utilities.'
+description = "Mo python, less problems. Helpful python utilities."
 
-long_description = io.open('README.md', encoding='utf-8').read()
+long_description = io.open("README.md", encoding="utf-8").read()
 
 # Read in requirements
-requirements = open('requirements.txt').readlines()
+requirements = open("requirements.txt").readlines()
 requirements = [r.strip() for r in requirements]
-dev_requirements = open('requirements-dev.txt').readlines()
+dev_requirements = open("requirements-dev.txt").readlines()
 dev_requirements = [r.strip() for r in dev_requirements]
 
-pymore_packages = ['pymore']
+pymore_packages = ["pymore"]
 
 setup(
     name=name,
     version="0.1",
-    url='http://github.com/dabacon/pymore',
-    author='The pymore Developers',
-    author_email='dabacon@gmail.com',
-    python_requires=('>=3.6.0'),
+    url="http://github.com/dabacon/pymore",
+    author="The pymore Developers",
+    author_email="dabacon@gmail.com",
+    python_requires=(">=3.6.0"),
     install_requires=requirements,
     extras_require={
-        'dev_env': dev_requirements,
+        "dev_env": dev_requirements,
     },
-    license='Apache 2',
+    license="Apache 2",
     description=description,
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     packages=pymore_packages,
     include_package_data=True,
 )
