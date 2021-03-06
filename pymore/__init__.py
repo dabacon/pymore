@@ -15,3 +15,5 @@
 __version__ = "0.1.2"
 
 from pymore.equals_tester import EqualsTester
+
+from pymore.iterators import first
