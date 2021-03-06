@@ -15,9 +15,9 @@
 
 """A utility class for testing equality methods.
 
-To test an equality method, create an EqualityTester and add several groups of items to it. 
-The equality tester will check that the items within each group are all equal to each other, 
-but that items between each group are never equal to each other. It will also check that 
+To test an equality method, create an EqualityTester and add several groups of items to it.
+The equality tester will check that the items within each group are all equal to each other,
+but that items between each group are never equal to each other. It will also check that
 `a==b` implies `hash(a)==hash(b)`.
 """
 
@@ -144,6 +144,15 @@ class EqualsTester:
                 f"Example: hash({example[0]!r}) is {example[1]!r} "
                 f"but hash({example[2]!r}) is {example[3]!r}."
             )
+        # Tests that the objects correctly return NotImplemented when equals is called against
+        # classes that the object does not know the type of.
+        for v in group_items:
+            assert _TestsForNotImplemented(v) == v and v == _TestsForNotImplemented(v), (
+                "An item did not return NotImplemented when checking equality of this "
+                f"item against a different type than the item. Relevant item: {v!r}. "
+                "Common problem: returning NotImplementedError instead of NotImplemented "
+                "or returning False instead of NotImpelmented."
+            )
 
 
 class _ClassUnknownToSubjects:
@@ -157,3 +166,15 @@ class _ClassUnknownToSubjects:
 
     def __hash__(self):
         return hash(_ClassUnknownToSubjects)
+
+
+class _TestsForNotImplemented:
+    """Used to test that objects return NotImplemented for equality with other types.
+    This class is equal to a specific instance or delegates by returning NotImplemented.
+    """
+
+    def __init__(self, other):
+        self.other = other
+
+    def __eq__(self, other):
+        return True if other is self.other else NotImplemented
