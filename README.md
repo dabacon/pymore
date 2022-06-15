@@ -20,7 +20,7 @@ tester = pymore.EqualsTester()
 tester.add_equality_group(MyObject("a"), MyObject("a"))
 
 # Each new addition of an equality group also tests that the elements
-# in this new group are not equal to those in the perviously added group.
+# in this new group are not equal to those in the previously added group.
 # So, for example, this would raise an `AssertionError` if it was
 # true that `MyObject("a")` was equal to `MyObject("b")`.
 tester.add_equality_group(MyObject("b"), MyObject("b"))
