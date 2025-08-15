@@ -33,7 +33,7 @@ pymore_packages = ["pymore"]
 
 setup(
     name=name,
-    version="0.1.3",
+    version="0.1.4",
     url="http://github.com/dabacon/pymore",
     author="The pymore Developers",
     author_email="dabacon@gmail.com",
