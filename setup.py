@@ -48,7 +48,6 @@ setup(
     long_description_content_type="text/markdown",
     packages=pymore_packages,
     include_package_data=True,
-    package_data={"pytmore": ["py.typed"]},
     classifiers=[
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3.9",
