@@ -48,6 +48,19 @@ setup(
     long_description_content_type="text/markdown",
     packages=pymore_packages,
     include_package_data=True,
+    package_data={"pytmore": ["py.typed"]},
+    classifiers=[
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Typing :: Typed",
+    ],
+    keywords=["python", "testing", "iterators"],
 )
 
 # Instruction for release
