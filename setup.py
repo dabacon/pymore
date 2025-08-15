@@ -14,6 +14,7 @@
 
 import io
 import os
+
 from setuptools import setup
 
 name = "pymore"
@@ -36,7 +37,7 @@ setup(
     url="http://github.com/dabacon/pymore",
     author="The pymore Developers",
     author_email="dabacon@gmail.com",
-    python_requires=(">=3.6.0"),
+    python_requires=(">=3.9.0"),
     install_requires=requirements,
     extras_require={
         "dev_env": dev_requirements,
@@ -47,6 +48,18 @@ setup(
     long_description_content_type="text/markdown",
     packages=pymore_packages,
     include_package_data=True,
+    classifiers=[
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: OS Independent",
+        "Typing :: Typed",
+    ],
+    keywords=["python", "testing", "iterators"],
 )
 
 # Instruction for release
